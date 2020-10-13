@@ -60,11 +60,10 @@ class GSConnection():
 
     def get_account(self):
         '''
-        Gets and parses account data after login. Note will return false if we are not in a logged in state, but
-        this is subject to change.
+        Gets and parses account data after login.
         '''
         if self.state != ConnState.LOGGED_IN:
-            return False  # Should raise exception
+            raise Exception("Not logged in!")
         # Get account page and parse it using bs4
         account_resp = self.session.get("https://www.gradescope.com/account")
         parsed_account_resp = BeautifulSoup(account_resp.text, 'html.parser')

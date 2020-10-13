@@ -11,10 +11,11 @@ class GSQuestion():
         self.parent_id = parent_id
         self.content = content
         self.crop = crop
-        
+
     def to_patch(self):
         children = [child.to_patch() for child in self.children]
-        output = {'id': self.qid, 'title': self.title, 'weight': self.weight, 'crop_rect_list': self.crop}
+        output = {'id': self.qid, 'title': self.title,
+                  'weight': self.weight, 'crop_rect_list': self.crop}
         print('length of children:', len(self.children))
         if len(children) != 0:
             output['children'] = children

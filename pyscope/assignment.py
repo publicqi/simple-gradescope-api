@@ -1,9 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 try:
-   from question import GSQuestion
+    from question import GSQuestion
 except ModuleNotFoundError:
-   from .question import GSQuestion
+    from .question import GSQuestion
 import json
 
 class GSAssignment():
@@ -19,13 +19,15 @@ class GSAssignment():
         self.course = course
         self.questions = []
 
-    def add_question(self, title, weight, crop = None, content = [], parent_id = None):
+    def add_question(self, title, weight, crop=None, content=[], parent_id=None):
         new_q_data = [q.to_patch() for q in self.questions]
-        new_crop = crop if crop else [{'x1': 10, 'x2': 91, 'y1': 73, 'y2': 93, 'page_number': 1}]
+        new_crop = crop if crop else [
+            {'x1': 10, 'x2': 91, 'y1': 73, 'y2': 93, 'page_number': 1}]
         new_q = {'title': title, 'weight': weight, 'crop_rect_list': new_crop}
         if parent_id:
             # TODO: This should throw a custom exception if a parent is not found
-            parent = [parent for parent in new_q_data if parent['id'] == parent_id][0]
+            parent = [parent for parent in new_q_data if parent['id']
+                      == parent_id][0]
             if parent['children']:
                 parent['children'].append(new_q)
             else:
@@ -40,13 +42,14 @@ class GSAssignment():
         outline_resp = self.course.session.get('https://www.gradescope.com/courses/' + self.course.cid +
                                                '/assignments/' + self.aid + '/outline/edit')
         parsed_outline_resp = BeautifulSoup(outline_resp.text, 'html.parser')
-        authenticity_token = parsed_outline_resp.find('meta', attrs = {'name': 'csrf-token'} ).get('content')
+        authenticity_token = parsed_outline_resp.find(
+            'meta', attrs={'name': 'csrf-token'}).get('content')
 
         patch_resp = self.course.session.patch('https://www.gradescope.com/courses/' + self.course.cid +
                                                '/assignments/' + self.aid + '/outline/',
-                                               headers = {'x-csrf-token': authenticity_token,
-                                                          'Content-Type': 'application/json'},
-                                               data = json.dumps(new_patch,separators=(',',':')))
+                                               headers={'x-csrf-token': authenticity_token,
+                                                        'Content-Type': 'application/json'},
+                                               data=json.dumps(new_patch, separators=(',', ':')))
 
         if patch_resp.status_code != requests.codes.ok:
             patch_resp.raise_for_status()
@@ -62,11 +65,12 @@ class GSAssignment():
         new_q_data = [q.to_patch() for q in self.questions]
 
         # TODO Yes this is slow and ugly, should be improved
-        if title: 
+        if title:
             new_q_data = [q for q in new_q_data if q['title'] != title]
             for q in new_q_data:
                 if q.get('children'):
-                    q['children'] = [sq for sq in q['children'] if sq['title'] != title]
+                    q['children'] = [sq for sq in q['children']
+                                     if sq['title'] != title]
         else:
             new_q_data = [q for q in new_q_data if q['id'] != qid]
             for q in new_q_data:
@@ -79,16 +83,18 @@ class GSAssignment():
         outline_resp = self.course.session.get('https://www.gradescope.com/courses/' + self.course.cid +
                                                '/assignments/' + self.aid + '/outline/edit')
         parsed_outline_resp = BeautifulSoup(outline_resp.text, 'html.parser')
-        authenticity_token = parsed_outline_resp.find('meta', attrs = {'name': 'csrf-token'} ).get('content')
+        authenticity_token = parsed_outline_resp.find(
+            'meta', attrs={'name': 'csrf-token'}).get('content')
 
         patch_resp = self.course.session.patch('https://www.gradescope.com/courses/' + self.course.cid +
                                                '/assignments/' + self.aid + '/outline/',
-                                               headers = {'x-csrf-token': authenticity_token,
-                                                          'Content-Type': 'application/json'},
-                                               data = json.dumps(new_patch,separators=(',',':')))
+                                               headers={'x-csrf-token': authenticity_token,
+                                                        'Content-Type': 'application/json'},
+                                               data=json.dumps(new_patch, separators=(',', ':')))
 
         print(patch_resp.status_code)
     # TODO
+
     def add_instructor_submission(self, fname):
         '''
         Upload a PDF submission.
@@ -103,13 +109,13 @@ class GSAssignment():
     def unpublish_grades(self):
         pass
 
-    def _lazy_load_questions(self):        
+    def _lazy_load_questions(self):
         outline_resp = self.course.session.get('https://www.gradescope.com/courses/' + self.course.cid +
                                                '/assignments/' + self.aid + '/outline/edit')
         parsed_outline_resp = BeautifulSoup(outline_resp.text, 'html.parser')
 
         props = parsed_outline_resp.find('div',
-                                         attrs={'data-react-class':'AssignmentOutline'}).get('data-react-props')
+                                         attrs={'data-react-class': 'AssignmentOutline'}).get('data-react-props')
         json_props = json.loads(props)
         outline = json_props['outline']
 
@@ -122,7 +128,7 @@ class GSAssignment():
             crop = question['crop_rect_list']
             children = []
             qchildren = question.get('children', [])
-            
+
             for subquestion in qchildren:
                 c_qid = subquestion['id']
                 c_title = subquestion['title']
@@ -130,7 +136,7 @@ class GSAssignment():
                 c_weight = subquestion['weight']
                 c_content = subquestion['content']
                 c_crop = subquestion['crop_rect_list']
-                children.append(GSQuestion(c_qid, c_title, c_weight, [], c_parent_id, c_content, c_crop))
-            self.questions.append(GSQuestion(qid, title, weight, children, parent_id, content, crop))
-            
-        
+                children.append(GSQuestion(
+                    c_qid, c_title, c_weight, [], c_parent_id, c_content, c_crop))
+            self.questions.append(GSQuestion(
+                qid, title, weight, children, parent_id, content, crop))
