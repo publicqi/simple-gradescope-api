@@ -25,4 +25,4 @@ class GSAccount():
 
     def get_dues_json(self, year):
         dues_dict = self.get_dues(year)
-        print(json.dumps(dues_dict))
+        return json.dumps(dues_dict)
