@@ -72,7 +72,6 @@ class GSConnection():
             name = course.find('h4', class_='courseBox--name').text
             cid = course.get("href").split("/")[-1]
             year = None
-            print(cid, name, shortname)
             for tag in course.parent.previous_siblings:
                 if 'courseList--term' in tag.get("class"):
                     year = tag.string
@@ -80,3 +79,4 @@ class GSConnection():
             if year is None:
                 raise Exception("Year not found", year)
             self.account.add_class(cid, name, shortname, year)
+            print(cid, shortname, year)

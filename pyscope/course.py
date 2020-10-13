@@ -14,8 +14,9 @@ class GSCourse():
         self.year = year
         self.session = session
         self.assignments = {}
+        self.load_assignments()
 
-    def get_assignments(self):
+    def load_assignments(self):
         assignment_resp = self.session.get(
             'https://www.gradescope.com/courses/' + self.cid)
         parsed_assignment_resp = BeautifulSoup(assignment_resp.text, 'html.parser')
@@ -34,3 +35,6 @@ class GSCourse():
             due_ts = parser.parse(assignment.findAll('td', class_='hidden-column')[1].string)
 
             self.assignments[name] = GSAssignment(name, status, released_ts, due_ts)
+
+    def get_dues(self):
+        pass

@@ -14,3 +14,10 @@ class GSAccount():
 
     def add_class(self, cid, name, shortname, year):
         self.student_courses[cid] = GSCourse(cid, name, shortname, year, self.session)
+
+    def get_dues(self, year):
+        dues = {}
+        for cid in self.student_courses.keys():
+            if self.student_courses[cid].year == year:
+                dues[cid] = self.student_courses[cid].get_dues()
+        return dues
