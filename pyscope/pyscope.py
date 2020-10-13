@@ -78,6 +78,5 @@ class GSConnection():
                     year = tag.string
                     break
             if year is None:
-                return False  # Should probably raise an exception.
-            self.account.add_class(cid, name, shortname,
-                                   year, instructor=False)
+                raise Exception("Year not found", year)
+            self.account.add_class(cid, name, shortname, year)
