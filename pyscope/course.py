@@ -31,8 +31,8 @@ class GSCourse():
                 name = name_th.find('button').string
 
             status = assignment.find('div', class_='submissionStatus--text').string
-            released_ts = parser.parse(assignment.findAll('td', class_='hidden-column')[0].string)
-            due_ts = parser.parse(assignment.findAll('td', class_='hidden-column')[1].string)
+            released_ts = int(parser.parse(assignment.findAll('td', class_='hidden-column')[0].string))
+            due_ts = int(parser.parse(assignment.findAll('td', class_='hidden-column')[1].string))
 
             self.assignments[name] = GSAssignment(name, status, released_ts, due_ts)
 
