@@ -3,9 +3,10 @@ try:
 except ModuleNotFoundError:
     from .course import GSCourse
 
+import json
+
 
 class GSAccount():
-    '''A class designed to track the account details (instructor and student courses'''
 
     def __init__(self, email, session):
         self.email = email
@@ -21,3 +22,7 @@ class GSAccount():
             if self.student_courses[cid].year == year:
                 dues[cid] = self.student_courses[cid].get_dues()
         return dues
+
+    def get_dues_json(self, year):
+        dues_dict = self.get_dues(year)
+        print(json.dumps(dues_dict))
