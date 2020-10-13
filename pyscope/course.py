@@ -4,6 +4,7 @@ try:
 except ModuleNotFoundError:
     from .assignment import GSAssignment
 from dateutil import parser
+from datetime import datetime
 
 class GSCourse():
 
@@ -33,8 +34,9 @@ class GSCourse():
             status = assignment.find('div', class_='submissionStatus--text').string
             released_ts = int(parser.parse(assignment.findAll('td', class_='hidden-column')[0].string))
             due_ts = int(parser.parse(assignment.findAll('td', class_='hidden-column')[1].string))
+            current_ts = parser.parse(datetime.now())
 
-            self.assignments[name] = GSAssignment(name, status, released_ts, due_ts)
+            self.assignments[name] = GSAssignment(name, status, released_ts, due_ts, current_ts)
 
     def get_dues(self):
         pass
