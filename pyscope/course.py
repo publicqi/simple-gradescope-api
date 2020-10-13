@@ -5,8 +5,6 @@ except ModuleNotFoundError:
     from .assignment import GSAssignment
 from dateutil import parser
 
-import code
-
 class GSCourse():
 
     def __init__(self, cid, name, shortname, year, session):
