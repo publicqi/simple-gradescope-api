@@ -13,5 +13,4 @@ class GSAccount():
         self.student_courses = {}
 
     def add_class(self, cid, name, shortname, year):
-        self.student_courses[cid] = GSCourse(
-            cid, name, shortname, year, self.session)
+        self.student_courses[cid] = GSCourse(cid, name, shortname, year, self.session)

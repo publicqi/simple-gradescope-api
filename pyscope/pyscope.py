@@ -6,10 +6,6 @@ try:
 except ModuleNotFoundError:
     from .account import GSAccount
 
-try:
-    from course import GSCourse
-except ModuleNotFoundError:
-    from .course import GSCourse
 
 
 class ConnState(Enum):
