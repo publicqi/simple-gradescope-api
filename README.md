@@ -1,4 +1,4 @@
-#simple-gradescope-api
+# simple-gradescope-api
 
 ## Since
 
