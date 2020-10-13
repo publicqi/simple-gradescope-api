@@ -19,10 +19,6 @@ class GSCourse():
         self.assignments = {}
 
     def get_assignments(self):
-        '''
-        Load the assignment dictionary from assignments. This is done lazily to avoid slowdown caused by getting
-        all the assignments for all classes. Also makes us less vulnerable to blocking.
-        '''
         assignment_resp = self.session.get(
             'https://www.gradescope.com/courses/' + self.cid)
         parsed_assignment_resp = BeautifulSoup(assignment_resp.text, 'html.parser')
