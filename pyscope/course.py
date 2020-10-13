@@ -10,7 +10,6 @@ import code
 class GSCourse():
 
     def __init__(self, cid, name, shortname, year, session):
-        '''Create a course object that has lazy eval'd assignments'''
         self.cid = cid
         self.name = name
         self.shortname = shortname
