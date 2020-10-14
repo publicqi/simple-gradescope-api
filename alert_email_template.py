@@ -10,12 +10,13 @@ def _format_addr(s):
     return formataddr((Header(name, 'utf-8').encode(), addr))
 
 def convert(seconds):
+    days = seconds // (24 * 3600)
     seconds = seconds % (24 * 3600)
     hour = seconds // 3600
     seconds %= 3600
     minutes = seconds // 60
     seconds %= 60
-    return "%d:%02d:%02d" % (hour, minutes, seconds)
+    return "%d Days, %d Hours, %02d Minutes, %02d Seconds" % (days, hour, minutes, seconds)
 
 
 GRADESCOPE_USERNAME = ""
