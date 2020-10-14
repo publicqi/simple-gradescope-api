@@ -14,7 +14,7 @@ The api will copy some code from [apozharski/gradescope-api](https://github.com/
 
 ## How to use?
 
-[**alert_email_template.py** ](https://github.com/publicqi/simple-gradescope-api/blob/main/alert_email_template.py)
+[**alert_email_template.py**](https://github.com/publicqi/simple-gradescope-api/blob/main/alert_email_template.py)
 
 + Fill out the config informations
 
