@@ -79,4 +79,4 @@ class GSConnection():
             if year is None:
                 raise Exception("Year not found", year)
             self.account.add_class(cid, name, shortname, year)
-            print(cid, shortname, year)
+            # print(cid, shortname, year)

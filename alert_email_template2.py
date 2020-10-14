@@ -88,29 +88,29 @@ lock = threading.Lock()
 def update_dues_per_12_hrs():
     global dues
     while True:
-        print("update_dues_per_12_hrs()")
+        # print("update_dues_per_12_hrs()")
         lock.acquire()
-        print("update_dues_per_12_hrs()\tlock acquired")
+        # print("update_dues_per_12_hrs()\tlock acquired")
         dues = conn.account.get_dues('Fall 2020')
-        print("update_dues_per_12_hrs()\tdues updated")
+        # print("update_dues_per_12_hrs()\tdues updated")
         send_email()
-        print("update_dues_per_12_hrs()\temail sent")
-        print("update_dues_per_12_hrs()\tsleep(12 * 3600)")
+        # print("update_dues_per_12_hrs()\temail sent")
+        # print("update_dues_per_12_hrs()\tsleep(12 * 3600)")
         lock.release()
         time.sleep(60 * 60 * 12)
 
 def update_when_some_due_has_12_hrs_left():
     global dues
     while True:
-        print("update_when_some_due_has_12_hrs_left()")
+        # print("update_when_some_due_has_12_hrs_left()")
         lock.acquire()
-        print("update_when_some_due_has_12_hrs_left()\tlock acquired")
+        # print("update_when_some_due_has_12_hrs_left()\tlock acquired")
         dues = conn.account.get_dues('Fall 2020')
-        print("update_when_some_due_has_12_hrs_left()\tdues updated")
+        # print("update_when_some_due_has_12_hrs_left()\tdues updated")
         try:
             closest_due = send_email(True)
-            print("update_when_some_due_has_12_hrs_left()\temail sent")
-            print("update_dues_per_12_hrs()\tsleep(%d)" % closest_due)
+            # print("update_when_some_due_has_12_hrs_left()\temail sent")
+            # print("update_dues_per_12_hrs()\tsleep(%d)" % closest_due)
             lock.release()
             time.sleep(closest_due)
         except ValueError:
