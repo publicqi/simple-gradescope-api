@@ -20,6 +20,11 @@ The api will copy some code from [apozharski/gradescope-api](https://github.com/
 
 + Use a cron on a server to run this script periodically
 
+[**alert_email_template2.py**](https://github.com/publicqi/simple-gradescope-api/blob/main/alert_email_template2.py)
+
++ `python3 alert_email_template2.py &`
++ Use 2 threads: one constantly updates dues and send email per 12 hours, the other send email only when the assignment has 12 hours left.
+
 ## PRs
 
 PRs are welcomed. Hopefully you can understand the functions as they're simple and well-named. The only function I did not use is `get_dues_json()` in [account.py](https://github.com/publicqi/simple-gradescope-api/blob/main/pyscope/account.py). You can make a web app based on the json.
