@@ -30,8 +30,11 @@ class GSCourse():
             else:
                 name = name_th.string
 
-            status = assignment.find(
-                'div', class_='submissionStatus--text').string
+            status_div = assignment.find(
+                'div', class_='submissionStatus--text')
+            if status_div is None:
+                continue
+            status = status_div.string
             released_ts = int(parser.parse(assignment.findAll(
                 'td', class_='hidden-column')[0].string).timestamp())
             due_ts = int(parser.parse(assignment.findAll(
