@@ -14,7 +14,7 @@ The api will copy some code from [apozharski/gradescope-api](https://github.com/
 
 ## How to use?
 
-[**alert_email_template.py**](https://github.com/publicqi/simple-gradescope-api/blob/main/alert_email_template.py)
+[**alert_email_template.py(deprecated)**](https://github.com/publicqi/simple-gradescope-api/blob/main/alert_email_template.py)
 
 + Fill out the config informations
 
@@ -24,6 +24,16 @@ The api will copy some code from [apozharski/gradescope-api](https://github.com/
 
 + `python3 alert_email_template2.py &`
 + Use 2 threads: one constantly updates dues and send email per 12 hours, the other send email only when the assignment has 12 hours left.
+
+## How to use in detail
+
+[**alert_email_template2.py**](https://github.com/publicqi/simple-gradescope-api/blob/main/alert_email_template2.py) is a wrapper for this tool and is the script I've been using on my server. I think you can deploy this on the csil server(if SMTP service is installed). Here's a little interpretation of this piece of code:
+
+There're two threadings `t1` and `t2`. Thread 1 runs a function calls `update_dues_per_12_hrs` and thread 2 runs `update_when_some_due_has_12_hrs_left`. They do exactly what the function names suggest. Inside the two functions, they update a global object called `dues`(a dict) and calls `send_email` to notify you.
+
+In `update_dues_per_12_hrs`, the thread will sleep 12 hours and run the update&send process. In `update_when_some_due_has_12_hrs_left`, the thread will sleep until any due has 12 hours left. You can read the detailed code yourself.
+
+As for how to deploy this, I simply runs `python3 alert_email_template2.py & `. The ampersand means "running background" in linux. I know there's better ways to deploy this like [supervisor](http://supervisord.org/), but I'm too lazy to use that. Also I implemented a `send_error_email` function to catch any Exception and send an email. Please let me know if that happened.
 
 ## PRs
 
