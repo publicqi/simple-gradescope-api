@@ -79,6 +79,18 @@ def send_email(near_due=False):
     return 4 * 3600  # else sleep 4 hrs
 
 
+def send_error_email():
+    msg = MIMEText("A bug is present! Kill it!", 'plain', 'utf-8')
+    msg['From'] = _format_addr('Sloppy Developer <{}>'.format(FROM_ADDR))
+    msg['To'] = _format_addr('Bug Killer <{}>'.format(TO_ADDR))
+    msg['Subject'] = Header('A bug is present! Kill it!', 'utf-8').encode()
+
+    server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+    server.login(FROM_ADDR, PASSWORD)
+    server.sendmail(FROM_ADDR, [TO_ADDR], msg.as_string())
+    server.quit()
+
+
 conn = GSConnection()
 conn.login(GRADESCOPE_USERNAME, GRADESCOPE_PASSWORD)
 conn.get_account()
@@ -120,5 +132,9 @@ def update_when_some_due_has_12_hrs_left():
 t1 = threading.Thread(target=update_dues_per_12_hrs, name='update_dues_per_12_hrs')
 t2 = threading.Thread(target=update_when_some_due_has_12_hrs_left, name='update_when_some_due_has_12_hrs_left')
 
-t1.start()
-t2.start()
+try:
+    t1.start()
+    t2.start()
+except Exception:
+    send_error_email()
+    exit()
